@@ -1,0 +1,9 @@
+services:
+  - type: web
+    name: mystichat
+    env: node
+    buildCommand: ./render-build.sh
+    startCommand: cd /opt/render/project/src && npm start
+    envVars:
+      - key: NODE_ENV
+        value: production 
