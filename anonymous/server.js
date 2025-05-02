@@ -16,6 +16,11 @@ const io = socketIo(server, {
 // Serve static files
 app.use(express.static(path.join(__dirname, 'public')));
 
+// Handle root path
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
+
 // Queue for waiting users
 const waitingQueue = [];
 const activePairs = new Map();
@@ -89,6 +94,12 @@ io.on('connection', (socket) => {
             waitingQueue.splice(index, 1);
         }
     });
+});
+
+// Error handling middleware
+app.use((err, req, res, next) => {
+    console.error(err.stack);
+    res.status(500).send('Something broke!');
 });
 
 const PORT = process.env.PORT || 3000;
